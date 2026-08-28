@@ -60,39 +60,41 @@ class _Sidebar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      width: 220,
+    return Material(
       color: Theme.of(context).colorScheme.surfaceContainerLow,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              'Mobile Shop',
-              style: Theme.of(context).textTheme.titleLarge,
+      child: SizedBox(
+        width: 220,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                'Mobile Shop',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
             ),
-          ),
-          const SizedBox(height: 24),
-          Expanded(
-            child: ListView.builder(
-              itemCount: navItems.length,
-              itemBuilder: (context, index) {
-                final item = navItems[index];
-                final isSelected = index == selectedIndex;
+            const SizedBox(height: 24),
+            Expanded(
+              child: ListView.builder(
+                itemCount: navItems.length,
+                itemBuilder: (context, index) {
+                  final item = navItems[index];
+                  final isSelected = index == selectedIndex;
 
-                return ListTile(
-                  leading: Icon(item.icon),
-                  title: Text(item.label),
-                  selected: isSelected,
-                  selectedTileColor: Theme.of(context).colorScheme.primaryContainer,
-                  onTap: () => ref.read(selectedNavIndexProvider.notifier).state = index,
-                );
-              },
+                  return ListTile(
+                    leading: Icon(item.icon),
+                    title: Text(item.label),
+                    selected: isSelected,
+                    selectedTileColor: Theme.of(context).colorScheme.primaryContainer,
+                    onTap: () => ref.read(selectedNavIndexProvider.notifier).state = index,
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

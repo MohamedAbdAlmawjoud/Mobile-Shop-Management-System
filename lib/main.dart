@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'core/database/database_service.dart';
 import 'core/router/main_layout.dart';
-import 'core/theme/app_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize the database once at startup so it's ready before any
+  // screen tries to query it.
+  final db = await DatabaseService.instance.database;
+  debugPrint('Database opened at: ${db.path}');
+
   runApp(const ProviderScope(child: MobileShopApp()));
 }
 

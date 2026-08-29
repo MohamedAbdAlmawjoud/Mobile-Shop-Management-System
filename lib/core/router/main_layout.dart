@@ -71,7 +71,7 @@ class _Sidebar extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
-                'Mobile Shop',
+                'H Store',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../categories/data/categories_provider.dart';
+import '../../data/products_provider.dart';
 import '../../models/product_model.dart';
 
 /// Returns a ProductModel (without id if adding) via Navigator.pop,
@@ -21,7 +22,14 @@ class _ProductFormDialogState extends ConsumerState<ProductFormDialog> {
   late final TextEditingController _barcodeController;
   late final TextEditingController _priceController;
   late final TextEditingController _quantityController;
+  final _barcodeFocusNode = FocusNode();
+  final _priceFocusNode = FocusNode();
   int? _selectedCategoryId;
+  late bool _isImeiTracked;
+
+  // Set when the entered/scanned barcode matches a different existing
+  // product — shown as a warning, doesn't block typing but does block submit.
+  String? _barcodeWarning;
 
   @override
   void initState() {
@@ -32,6 +40,17 @@ class _ProductFormDialogState extends ConsumerState<ProductFormDialog> {
     _priceController = TextEditingController(text: existing?.price.toString() ?? '');
     _quantityController = TextEditingController(text: existing?.quantity.toString() ?? '');
     _selectedCategoryId = existing?.categoryId;
+    _isImeiTracked = existing?.isImeiTracked ?? false;
+
+    // Check for a duplicate as soon as the barcode field loses focus —
+    // covers both manual typing (tab/click away) and a scan (which we also
+    // check explicitly on submit, since a scanner's Enter moves focus away
+    // via onFieldSubmitted below, which also loses focus and triggers this).
+    _barcodeFocusNode.addListener(() {
+      if (!_barcodeFocusNode.hasFocus) {
+        _checkBarcodeDuplicate();
+      }
+    });
   }
 
   @override
@@ -40,7 +59,30 @@ class _ProductFormDialogState extends ConsumerState<ProductFormDialog> {
     _barcodeController.dispose();
     _priceController.dispose();
     _quantityController.dispose();
+    _barcodeFocusNode.dispose();
+    _priceFocusNode.dispose();
     super.dispose();
+  }
+
+  Future<void> _checkBarcodeDuplicate() async {
+    final barcode = _barcodeController.text.trim();
+    if (barcode.isEmpty) {
+      if (mounted) setState(() => _barcodeWarning = null);
+      return;
+    }
+
+    final repo = ref.read(productsRepositoryProvider);
+    final existingProduct = await repo.getByBarcode(barcode);
+
+    if (!mounted) return;
+
+    final isDifferentProduct =
+        existingProduct != null && existingProduct.id != widget.existing?.id;
+
+    setState(() {
+      _barcodeWarning =
+          isDifferentProduct ? 'Already used by "${existingProduct.name}"' : null;
+    });
   }
 
   @override
@@ -62,6 +104,7 @@ class _ProductFormDialogState extends ConsumerState<ProductFormDialog> {
                 autofocus: true,
                 decoration: const InputDecoration(labelText: 'Product name'),
                 validator: (v) => (v == null || v.trim().isEmpty) ? 'Name is required' : null,
+                textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 12),
               categoriesAsync.when(
@@ -88,7 +131,20 @@ class _ProductFormDialogState extends ConsumerState<ProductFormDialog> {
               const SizedBox(height: 12),
               TextFormField(
                 controller: _barcodeController,
-                decoration: const InputDecoration(labelText: 'Barcode (optional)'),
+                focusNode: _barcodeFocusNode,
+                decoration: InputDecoration(
+                  labelText: 'Barcode (optional — type or scan)',
+                  suffixIcon: const Icon(Icons.qr_code_scanner, size: 20),
+                  errorText: _barcodeWarning,
+                ),
+                textInputAction: TextInputAction.next,
+                // A scanner sends Enter after the digits. Don't submit the
+                // whole form here — just check for a duplicate and move to
+                // the next field, same as a cashier tabbing through.
+                onFieldSubmitted: (_) {
+                  _checkBarcodeDuplicate();
+                  FocusScope.of(context).requestFocus(_priceFocusNode);
+                },
               ),
               const SizedBox(height: 12),
               Row(
@@ -96,6 +152,7 @@ class _ProductFormDialogState extends ConsumerState<ProductFormDialog> {
                   Expanded(
                     child: TextFormField(
                       controller: _priceController,
+                      focusNode: _priceFocusNode,
                       decoration: const InputDecoration(labelText: 'Price'),
                       keyboardType: const TextInputType.numberWithOptions(decimal: true),
                       validator: _validatePrice,
@@ -105,12 +162,36 @@ class _ProductFormDialogState extends ConsumerState<ProductFormDialog> {
                   Expanded(
                     child: TextFormField(
                       controller: _quantityController,
-                      decoration: const InputDecoration(labelText: 'Quantity'),
+                      enabled: !_isImeiTracked,
+                      decoration: InputDecoration(
+                        labelText: 'Quantity',
+                        helperText: _isImeiTracked ? 'Added via Inventory' : null,
+                      ),
                       keyboardType: TextInputType.number,
-                      validator: _validateQuantity,
+                      validator: _isImeiTracked ? null : _validateQuantity,
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(height: 4),
+              CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                controlAffinity: ListTileControlAffinity.leading,
+                title: const Text('IMEI / Serial tracked'),
+                subtitle: Text(
+                  isEdit
+                      ? 'Cannot be changed after creation.'
+                      : 'For phones or serialized items. Stock is added one unit '
+                          'at a time (with its IMEI) via Inventory, not as a plain number.',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                value: _isImeiTracked,
+                onChanged: isEdit
+                    ? null
+                    : (value) => setState(() {
+                          _isImeiTracked = value ?? false;
+                          if (_isImeiTracked) _quantityController.text = '0';
+                        }),
               ),
             ],
           ),
@@ -145,9 +226,15 @@ class _ProductFormDialogState extends ConsumerState<ProductFormDialog> {
     return null;
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     if (_selectedCategoryId == null) return; // dropdown validator already caught this
+
+    // Final authoritative duplicate check right before submit, in case the
+    // field never lost focus (e.g. Enter wasn't used and Add was clicked
+    // directly after typing).
+    await _checkBarcodeDuplicate();
+    if (_barcodeWarning != null) return;
 
     final product = ProductModel(
       id: widget.existing?.id,
@@ -155,8 +242,11 @@ class _ProductFormDialogState extends ConsumerState<ProductFormDialog> {
       name: _nameController.text.trim(),
       barcode: _barcodeController.text.trim().isEmpty ? null : _barcodeController.text.trim(),
       price: double.parse(_priceController.text.trim()),
-      quantity: int.parse(_quantityController.text.trim()),
+      // IMEI-tracked products always start at 0 — stock comes in via
+      // Inventory's per-IMEI stock-in, not this form.
+      quantity: _isImeiTracked ? (widget.existing?.quantity ?? 0) : int.parse(_quantityController.text.trim()),
+      isImeiTracked: _isImeiTracked,
     );
-    Navigator.of(context).pop(product);
+    if (mounted) Navigator.of(context).pop(product);
   }
 }

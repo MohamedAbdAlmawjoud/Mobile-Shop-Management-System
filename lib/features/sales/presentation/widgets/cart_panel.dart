@@ -62,57 +62,61 @@ class CartPanel extends ConsumerWidget {
                             ],
                           ),
                           const SizedBox(height: 4),
-                          // Line 2: unit price + quantity controls + delete
+                          // Line 2: IMEI (if applicable) / unit price + controls + delete
                           Row(
                             children: [
                               Expanded(
                                 child: Text(
-                                  '\$${item.product.price.toStringAsFixed(2)} each',
+                                  item.isImeiUnit
+                                      ? 'IMEI: ${item.imei}'
+                                      : '\$${item.product.price.toStringAsFixed(2)} each',
                                   style: Theme.of(context).textTheme.bodySmall,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
                                 ),
                               ),
-                              IconButton(
-                                visualDensity: VisualDensity.compact,
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                icon: const Icon(Icons.remove_circle_outline, size: 20),
-                                onPressed: () => _changeQty(
-                                  context,
-                                  ref,
-                                  item.product.id!,
-                                  item.quantity - 1,
+                              if (!item.isImeiUnit) ...[
+                                IconButton(
+                                  visualDensity: VisualDensity.compact,
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  icon: const Icon(Icons.remove_circle_outline, size: 20),
+                                  onPressed: () => _changeQty(
+                                    context,
+                                    ref,
+                                    item.product.id!,
+                                    item.quantity - 1,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 28,
-                                child: Text(
-                                  '${item.quantity}',
-                                  textAlign: TextAlign.center,
+                                SizedBox(
+                                  width: 28,
+                                  child: Text(
+                                    '${item.quantity}',
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
-                              ),
-                              IconButton(
-                                visualDensity: VisualDensity.compact,
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                icon: const Icon(Icons.add_circle_outline, size: 20),
-                                onPressed: () => _changeQty(
-                                  context,
-                                  ref,
-                                  item.product.id!,
-                                  item.quantity + 1,
+                                IconButton(
+                                  visualDensity: VisualDensity.compact,
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  icon: const Icon(Icons.add_circle_outline, size: 20),
+                                  onPressed: () => _changeQty(
+                                    context,
+                                    ref,
+                                    item.product.id!,
+                                    item.quantity + 1,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 12),
+                                const SizedBox(width: 12),
+                              ],
                               IconButton(
                                 visualDensity: VisualDensity.compact,
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 icon: const Icon(Icons.delete_outline, size: 20),
-                                onPressed: () => ref
-                                    .read(cartProvider.notifier)
-                                    .removeProduct(item.product.id!),
+                                onPressed: () => item.isImeiUnit
+                                    ? ref.read(cartProvider.notifier).removeImeiUnit(item.imei!)
+                                    : ref.read(cartProvider.notifier).removeProduct(item.product.id!),
                               ),
                             ],
                           ),
@@ -182,7 +186,16 @@ class CartPanel extends ConsumerWidget {
       final saleId = await controller.checkout(cart);
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Sale #$saleId completed.'), backgroundColor: Colors.green),
+          SnackBar(
+            content: Text('Sale #$saleId completed.'),
+            backgroundColor: Colors.green,
+            action: SnackBarAction(
+              label: 'Print Invoice',
+              textColor: Colors.white,
+              onPressed: () => _printInvoice(context, ref, saleId),
+            ),
+            duration: const Duration(seconds: 6),
+          ),
         );
       }
     } on CheckoutException catch (e) {
@@ -192,5 +205,14 @@ class CartPanel extends ConsumerWidget {
         );
       }
     }
+  }
+
+  Future<void> _printInvoice(BuildContext context, WidgetRef ref, int saleId) async {
+    final repo = ref.read(salesRepositoryProvider);
+    final sale = await repo.getSaleDetail(saleId);
+    if (sale == null) return;
+
+    final invoiceService = ref.read(invoiceServiceProvider);
+    await invoiceService.printInvoice(sale);
   }
 }

@@ -11,6 +11,8 @@ import '../../features/inventory/presentation/screens/inventory_screen.dart';
 import '../../features/stock_count/presentation/screens/stock_count_screen.dart';
 import '../../features/reports/presentation/screens/reports_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
+import '../../features/suppliers/presentation/screens/suppliers_screen.dart';
+import '../../features/purchases/presentation/screens/purchases_screen.dart';
 
 class NavItem {
   final String label;
@@ -59,6 +61,18 @@ final List<NavItem> navItems = [
     label: 'Reports',
     icon: Icons.bar_chart_outlined,
     screen: const ReportsScreen(),
+    allowedRoles: const ['admin'],
+  ),
+  NavItem(
+    label: 'Suppliers',
+    icon: Icons.local_shipping_outlined,
+    screen: const SuppliersScreen(),
+    allowedRoles: const ['admin'],
+  ),
+  NavItem(
+    label: 'Purchases',
+    icon: Icons.shopping_cart_checkout_outlined,
+    screen: const PurchasesScreen(),
     allowedRoles: const ['admin'],
   ),
   NavItem(

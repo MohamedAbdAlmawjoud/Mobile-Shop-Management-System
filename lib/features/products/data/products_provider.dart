@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../dashboard/data/dashboard_provider.dart';
+import '../../inventory/data/inventory_provider.dart';
+import '../../sales/data/pos_products_provider.dart';
 import '../models/product_model.dart';
 import 'products_filter.dart';
 import 'products_repository.dart';
@@ -32,6 +35,7 @@ class ProductsNotifier extends AsyncNotifier<List<ProductModel>> {
     await _repo.insert(product);
     ref.invalidateSelf();
     await future;
+    _refreshElsewhere();
   }
 
   Future<void> updateProduct(ProductModel product) async {
@@ -44,6 +48,7 @@ class ProductsNotifier extends AsyncNotifier<List<ProductModel>> {
     await _repo.update(product);
     ref.invalidateSelf();
     await future;
+    _refreshElsewhere();
   }
 
   Future<void> deleteProduct(int id) async {
@@ -51,6 +56,7 @@ class ProductsNotifier extends AsyncNotifier<List<ProductModel>> {
       await _repo.delete(id);
       ref.invalidateSelf();
       await future;
+      _refreshElsewhere();
     } on Exception catch (e) {
       if (e.toString().toLowerCase().contains('foreign key')) {
         throw const ProductOperationException(
@@ -71,6 +77,14 @@ class ProductsNotifier extends AsyncNotifier<List<ProductModel>> {
     if (product.quantity < 0) {
       throw const ProductOperationException('Quantity cannot be negative.');
     }
+  }
+
+  // Anything created/edited/deleted here also needs to be reflected in the
+  // Inventory tab, the POS product grid, and the Dashboard's product count.
+  void _refreshElsewhere() {
+    ref.invalidate(inventoryProvider);
+    ref.invalidate(posProductsProvider);
+    ref.read(dashboardProvider.notifier).refresh();
   }
 }
 

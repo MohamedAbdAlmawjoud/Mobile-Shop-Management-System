@@ -5,6 +5,7 @@ class ProductModel {
   final String? barcode;
   final double price;
   final int quantity;
+  final bool isImeiTracked;
   final DateTime? createdAt;
 
   const ProductModel({
@@ -14,6 +15,7 @@ class ProductModel {
     this.barcode,
     required this.price,
     required this.quantity,
+    this.isImeiTracked = false,
     this.createdAt,
   });
 
@@ -25,6 +27,7 @@ class ProductModel {
       barcode: map['barcode'] as String?,
       price: (map['price'] as num).toDouble(),
       quantity: map['quantity'] as int,
+      isImeiTracked: (map['is_imei_tracked'] as int? ?? 0) == 1,
       createdAt: map['created_at'] != null
           ? DateTime.parse(map['created_at'] as String)
           : null,
@@ -39,6 +42,7 @@ class ProductModel {
       'barcode': barcode,
       'price': price,
       'quantity': quantity,
+      'is_imei_tracked': isImeiTracked ? 1 : 0,
     };
   }
 
@@ -49,6 +53,7 @@ class ProductModel {
     String? barcode,
     double? price,
     int? quantity,
+    bool? isImeiTracked,
   }) {
     return ProductModel(
       id: id ?? this.id,
@@ -57,6 +62,7 @@ class ProductModel {
       barcode: barcode ?? this.barcode,
       price: price ?? this.price,
       quantity: quantity ?? this.quantity,
+      isImeiTracked: isImeiTracked ?? this.isImeiTracked,
       createdAt: createdAt,
     );
   }

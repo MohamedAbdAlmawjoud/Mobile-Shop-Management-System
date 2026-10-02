@@ -6,6 +6,7 @@ import '../../data/products_filter.dart';
 import '../../data/products_provider.dart';
 import '../../models/product_model.dart';
 import '../widgets/product_form_dialog.dart';
+import '../widgets/view_imeis_dialog.dart';
 
 class ProductsScreen extends ConsumerWidget {
   const ProductsScreen({super.key});
@@ -74,12 +75,30 @@ class ProductsScreen extends ConsumerWidget {
                 }
                 return ListView.separated(
                   itemCount: products.length,
-                  separatorBuilder: (_, _) => const Divider(height: 1),
+                  separatorBuilder: (_, __) => const Divider(height: 1),
                   itemBuilder: (context, index) {
                     final product = products[index];
                     final lowStock = product.quantity <= 5;
                     return ListTile(
-                      title: Text(product.name),
+                      title: Row(
+                        children: [
+                          Flexible(child: Text(product.name)),
+                          if (product.isImeiTracked) ...[
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: const Text(
+                                'IMEI',
+                                style: TextStyle(fontSize: 10, color: Colors.blue, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
                       subtitle: Text(
                         '${product.barcode ?? 'No barcode'} · \$${product.price.toStringAsFixed(2)} · Qty: ${product.quantity}',
                       ),
@@ -89,6 +108,15 @@ class ProductsScreen extends ConsumerWidget {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          if (product.isImeiTracked)
+                            IconButton(
+                              icon: const Icon(Icons.qr_code_2_outlined),
+                              tooltip: 'View IMEIs',
+                              onPressed: () => showDialog(
+                                context: context,
+                                builder: (_) => ViewImeisDialog(product: product),
+                              ),
+                            ),
                           IconButton(
                             icon: const Icon(Icons.edit_outlined),
                             onPressed: () => _handleEdit(context, ref, product),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../products/presentation/widgets/imei_lookup_section.dart';
 import '../../../users/presentation/screens/users_management_section.dart';
+import '../widgets/backup_restore_section.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -14,8 +16,9 @@ class SettingsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             UsersManagementSection(),
-            // Future settings sections (backup/restore, app preferences, etc.)
-            // go here as additional cards, once Step 15 covers them.
+            ImeiLookupSection(),
+            BackupRestoreSection(),
+            // Future settings sections (app preferences, etc.) go here.
           ],
         ),
       ),

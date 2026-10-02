@@ -3,11 +3,15 @@ import 'package:flutter_riverpod/legacy.dart';
 
 import '../../auth/data/auth_provider.dart';
 import '../../dashboard/data/dashboard_provider.dart';
+import '../../inventory/data/inventory_provider.dart';
 import '../../products/data/products_provider.dart';
 import 'cart_item.dart';
 import 'cart_provider.dart';
+import 'invoice_service.dart';
 import 'pos_products_provider.dart';
 import 'sales_repository.dart';
+
+final invoiceServiceProvider = Provider((ref) => InvoiceService());
 
 final salesRepositoryProvider = Provider((ref) => SalesRepository());
 
@@ -49,6 +53,8 @@ class CheckoutController {
       // Refresh anything that depends on product quantities or sales totals.
       ref.invalidate(productsProvider);
       ref.invalidate(posProductsProvider);
+      ref.invalidate(inventoryProvider);
+      ref.invalidate(movementHistoryProvider);
       await ref.read(dashboardProvider.notifier).refresh();
 
       return saleId;

@@ -1,4 +1,4 @@
-import '../../products/models/product_model.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
 
 /// One line in an in-progress stock count session — UI-only until approved.
 class StockCountEntry {

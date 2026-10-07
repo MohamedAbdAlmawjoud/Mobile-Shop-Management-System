@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'nav_provider.dart';
-import '../../features/auth/data/auth_provider.dart';
-import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
-import '../../features/categories/presentation/screens/categories_screen.dart';
-import '../../features/products/presentation/screens/products_screen.dart';
-import '../../features/sales/presentation/screens/sales_screen.dart';
-import '../../features/inventory/presentation/screens/inventory_screen.dart';
-import '../../features/stock_count/presentation/screens/stock_count_screen.dart';
-import '../../features/reports/presentation/screens/reports_screen.dart';
-import '../../features/settings/presentation/screens/settings_screen.dart';
-import '../../features/suppliers/presentation/screens/suppliers_screen.dart';
-import '../../features/purchases/presentation/screens/purchases_screen.dart';
+import 'package:mobile_shop_management_system/features/auth/data/auth_provider.dart';
+import 'package:mobile_shop_management_system/features/dashboard/presentation/screens/dashboard_screen.dart';
+import 'package:mobile_shop_management_system/features/categories/presentation/screens/categories_screen.dart';
+import 'package:mobile_shop_management_system/features/products/presentation/screens/products_screen.dart';
+import 'package:mobile_shop_management_system/features/sales/presentation/screens/sales_screen.dart';
+import 'package:mobile_shop_management_system/features/inventory/presentation/screens/inventory_screen.dart';
+import 'package:mobile_shop_management_system/features/stock_count/presentation/screens/stock_count_screen.dart';
+import 'package:mobile_shop_management_system/features/reports/presentation/screens/reports_screen.dart';
+import 'package:mobile_shop_management_system/features/settings/presentation/screens/settings_screen.dart';
+import 'package:mobile_shop_management_system/features/suppliers/presentation/screens/suppliers_screen.dart';
+import 'package:mobile_shop_management_system/features/purchases/presentation/screens/purchases_screen.dart';
 
 class NavItem {
   final String label;

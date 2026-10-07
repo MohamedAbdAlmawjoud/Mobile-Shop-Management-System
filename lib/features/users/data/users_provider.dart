@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/auth/password_hasher.dart';
-import '../../auth/data/auth_provider.dart';
-import '../models/user_model.dart';
+import 'package:mobile_shop_management_system/core/auth/password_hasher.dart';
+import 'package:mobile_shop_management_system/features/auth/data/auth_provider.dart';
+import 'package:mobile_shop_management_system/features/users/models/user_model.dart';
 import 'users_repository.dart';
 
 final usersRepositoryProvider = Provider((ref) => UsersRepository());

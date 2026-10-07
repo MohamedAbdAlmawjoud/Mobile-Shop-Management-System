@@ -1,4 +1,4 @@
-import '../../products/models/product_model.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
 
 /// A single recent sale, with just enough info for the dashboard list
 /// (avoids pulling in full SaleModel + a separate user lookup per row).

@@ -1,7 +1,7 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import '../../../core/constants/app_constants.dart';
-import '../../../core/database/database_service.dart';
+import 'package:mobile_shop_management_system/core/constants/app_constants.dart';
+import 'package:mobile_shop_management_system/core/database/database_service.dart';
 
 class StockCountRepository {
   Future<Database> get _db async => DatabaseService.instance.database;

@@ -1,7 +1,7 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import '../../../core/constants/app_constants.dart';
-import '../../../core/database/database_service.dart';
+import 'package:mobile_shop_management_system/core/constants/app_constants.dart';
+import 'package:mobile_shop_management_system/core/database/database_service.dart';
 import 'cart_item.dart';
 import 'sale_detail.dart';
 
@@ -13,12 +13,8 @@ class InsufficientStockException implements Exception {
 class SalesRepository {
   Future<Database> get _db async => DatabaseService.instance.database;
 
-  /// Completes a sale: inserts the sale, its line items, decrements product
-  /// stock, and records a SALE stock movement per line — all inside a single
-  /// database transaction. If anything fails (including a stock check),
-  /// the whole transaction rolls back and nothing is written.
-  ///
-  /// Returns the new sale's id.
+  /// Records the sale, items, stock changes, and movements atomically.
+  /// Returns the new sale ID.
   Future<int> completeSale({
     required List<CartItem> items,
     required String paymentMethod,
@@ -52,14 +48,9 @@ class SalesRepository {
     }
 
     return db.transaction<int>((txn) async {
-      // Re-check stock inside the transaction — the cart's cached product
-      // data could be stale if stock changed elsewhere since the cart was
-      // built. This is the real guard against overselling, not the UI check
-      // in CartNotifier (that one's just for responsiveness).
+      // Cart stock may be stale; validate again before committing.
       for (final item in items.where((item) => item.isImeiUnit)) {
-        // For an IMEI unit, "stock" means this exact serial is still
-        // in_stock — someone else could have sold it since it was added
-        // to this cart.
+        // Confirm this exact serial is still available.
         final rows = await txn.query(
           'product_imeis',
           where: 'imei = ? AND product_id = ?',
@@ -91,14 +82,12 @@ class SalesRepository {
         }
       }
 
-      // Insert the sale.
       final saleId = await txn.insert('sales', {
         'user_id': userId,
         'total': total,
         'payment_method': paymentMethod,
       });
 
-      // Insert line items, decrement stock, record stock movements.
       for (final item in items) {
         await txn.insert('sale_items', {
           'sale_id': saleId,
@@ -136,8 +125,7 @@ class SalesRepository {
     });
   }
 
-  /// Full detail for one sale (header + line items), for rendering an
-  /// invoice. Returns null if the sale doesn't exist.
+  /// Returns invoice details, or null if the sale doesn't exist.
   Future<SaleDetail?> getSaleDetail(int saleId) async {
     final db = await _db;
 

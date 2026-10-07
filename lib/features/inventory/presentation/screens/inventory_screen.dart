@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../data/inventory_provider.dart';
-import '../../../products/data/imei_provider.dart';
-import '../../../products/data/imei_repository.dart';
-import '../../../products/models/product_model.dart';
-import '../widgets/imei_stock_in_dialog.dart';
-import '../widgets/stock_in_dialog.dart';
+import 'package:mobile_shop_management_system/features/inventory/data/inventory_provider.dart';
+import 'package:mobile_shop_management_system/features/products/data/imei_provider.dart';
+import 'package:mobile_shop_management_system/features/products/data/imei_repository.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
+import 'package:mobile_shop_management_system/features/inventory/presentation/widgets/imei_stock_in_dialog.dart';
+import 'package:mobile_shop_management_system/features/inventory/presentation/widgets/stock_in_dialog.dart';
 
 class InventoryScreen extends ConsumerStatefulWidget {
   const InventoryScreen({super.key});

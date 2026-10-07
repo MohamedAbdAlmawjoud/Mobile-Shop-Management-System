@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../auth/data/auth_provider.dart';
-import '../../data/users_provider.dart';
-import '../../models/user_model.dart';
-import '../widgets/user_form_dialog.dart';
+import 'package:mobile_shop_management_system/features/auth/data/auth_provider.dart';
+import 'package:mobile_shop_management_system/features/users/data/users_provider.dart';
+import 'package:mobile_shop_management_system/features/users/models/user_model.dart';
+import 'package:mobile_shop_management_system/features/users/presentation/widgets/user_form_dialog.dart';
 
-/// Embedded inside the Settings screen (not its own sidebar item) since
-/// the plan groups user management under general app settings.
+/// User management controls shown in Settings.
 class UsersManagementSection extends ConsumerWidget {
   const UsersManagementSection({super.key});
 

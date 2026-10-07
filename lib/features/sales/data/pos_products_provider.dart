@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
-import '../../products/data/products_provider.dart';
-import '../../products/models/product_model.dart';
+import 'package:mobile_shop_management_system/features/products/data/products_provider.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
 
 /// POS has its own search box, deliberately separate from the Products
 /// screen's search/filter state — searching for a product to sell shouldn't

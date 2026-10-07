@@ -1,7 +1,7 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import '../../../core/constants/app_constants.dart';
-import '../../../core/database/database_service.dart';
+import 'package:mobile_shop_management_system/core/constants/app_constants.dart';
+import 'package:mobile_shop_management_system/core/database/database_service.dart';
 import 'purchase_cart_item.dart';
 import 'purchase_models.dart';
 
@@ -13,17 +13,8 @@ class PurchaseException implements Exception {
 class PurchasesRepository {
   Future<Database> get _db async => DatabaseService.instance.database;
 
-  /// Completes a purchase: inserts the purchase, its line items, increments
-  /// product stock (and, for IMEI lines, records each individual unit),
-  /// and logs a stock movement per line — all in one transaction.
-  ///
-  /// Note: stock movements from a purchase are recorded with type STOCK_IN
-  /// (not a separate PURCHASE type) — the reason field notes the supplier
-  /// and purchase number instead. Movement history and reports already
-  /// read STOCK_IN as "stock coming in," so this keeps that logic simple
-  /// rather than requiring a schema change to the movement type constraint.
-  ///
-  /// Returns the new purchase's id.
+  /// Records the purchase, items, stock changes, and movements atomically.
+  /// Returns the new purchase ID. Purchase movements use STOCK_IN.
   Future<int> completePurchase({
     required int supplierId,
     required List<PurchaseCartItem> items,
@@ -51,8 +42,7 @@ class PurchasesRepository {
 
     try {
       return await db.transaction<int>((txn) async {
-        // Keep the friendly duplicate check in the transaction. The database's
-        // UNIQUE constraint remains the final guard against competing writes.
+        // Check inside the transaction; the unique index handles races.
         for (final item in items) {
           if (!item.isImeiLine) continue;
           for (final imei in item.imeis!) {

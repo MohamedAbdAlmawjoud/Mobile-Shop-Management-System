@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../categories/data/categories_provider.dart';
-import '../../data/products_filter.dart';
-import '../../data/products_provider.dart';
-import '../../models/product_model.dart';
-import '../widgets/product_form_dialog.dart';
-import '../widgets/view_imeis_dialog.dart';
+import 'package:mobile_shop_management_system/features/categories/data/categories_provider.dart';
+import 'package:mobile_shop_management_system/features/products/data/products_filter.dart';
+import 'package:mobile_shop_management_system/features/products/data/products_provider.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
+import 'package:mobile_shop_management_system/features/products/presentation/widgets/product_form_dialog.dart';
+import 'package:mobile_shop_management_system/features/products/presentation/widgets/view_imeis_dialog.dart';
 
 class ProductsScreen extends ConsumerWidget {
   const ProductsScreen({super.key});

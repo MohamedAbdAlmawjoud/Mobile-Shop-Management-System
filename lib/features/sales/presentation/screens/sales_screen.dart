@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../products/data/products_provider.dart';
-import '../../../products/models/product_model.dart';
-import '../../data/cart_provider.dart';
-import '../../data/pos_products_provider.dart';
-import '../../data/sales_provider.dart';
-import '../widgets/cart_panel.dart';
-import '../widgets/select_imei_dialog.dart';
+import 'package:mobile_shop_management_system/features/products/data/products_provider.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
+import 'package:mobile_shop_management_system/features/sales/data/cart_provider.dart';
+import 'package:mobile_shop_management_system/features/sales/data/pos_products_provider.dart';
+import 'package:mobile_shop_management_system/features/sales/presentation/widgets/cart_panel.dart';
+import 'package:mobile_shop_management_system/features/sales/presentation/widgets/select_imei_dialog.dart';
 
 class SalesScreen extends ConsumerStatefulWidget {
   const SalesScreen({super.key});
@@ -35,7 +34,6 @@ class _SalesScreenState extends ConsumerState<SalesScreen> {
       appBar: AppBar(title: const Text('Sales / POS')),
       body: Row(
         children: [
-          // Left: product search + tap-to-add list
           Expanded(
             flex: 3,
             child: Column(
@@ -142,7 +140,6 @@ class _SalesScreenState extends ConsumerState<SalesScreen> {
             ),
           ),
           const VerticalDivider(width: 1),
-          // Right: cart panel
           const Expanded(
             flex: 2,
             child: CartPanel(),

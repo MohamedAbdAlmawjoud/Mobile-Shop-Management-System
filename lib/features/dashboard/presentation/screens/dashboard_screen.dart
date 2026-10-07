@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../data/dashboard_provider.dart';
-import '../../data/dashboard_stats.dart';
+import 'package:mobile_shop_management_system/features/dashboard/data/dashboard_provider.dart';
+import 'package:mobile_shop_management_system/features/dashboard/data/dashboard_stats.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
@@ -46,7 +46,6 @@ class _DashboardBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Summary cards row
           Wrap(
             spacing: 16,
             runSpacing: 16,
@@ -74,7 +73,6 @@ class _DashboardBody extends StatelessWidget {
           ),
           const SizedBox(height: 24),
 
-          // Low stock list
           Text('Low Stock Products', style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 8),
           Card(
@@ -95,7 +93,6 @@ class _DashboardBody extends StatelessWidget {
           ),
           const SizedBox(height: 24),
 
-          // Recent sales list
           Text('Recent Sales', style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 8),
           Card(

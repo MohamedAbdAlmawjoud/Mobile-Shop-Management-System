@@ -1,7 +1,7 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import '../../../core/database/database_service.dart';
-import '../models/product_model.dart';
+import 'package:mobile_shop_management_system/core/database/database_service.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
 
 class ProductsRepository {
   Future<Database> get _db async => DatabaseService.instance.database;

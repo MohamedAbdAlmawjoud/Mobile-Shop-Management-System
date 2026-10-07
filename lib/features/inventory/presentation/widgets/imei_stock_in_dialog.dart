@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../products/models/product_model.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
 
 class ImeiStockInResult {
   final List<String> imeis;

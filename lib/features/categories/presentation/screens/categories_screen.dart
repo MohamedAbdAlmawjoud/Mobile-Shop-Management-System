@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../data/categories_provider.dart';
-import '../../models/category_model.dart';
-import '../widgets/category_form_dialog.dart';
+import 'package:mobile_shop_management_system/features/categories/data/categories_provider.dart';
+import 'package:mobile_shop_management_system/features/categories/models/category_model.dart';
+import 'package:mobile_shop_management_system/features/categories/presentation/widgets/category_form_dialog.dart';
 
 class CategoriesScreen extends ConsumerWidget {
   const CategoriesScreen({super.key});

@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../../sales/data/sales_provider.dart';
-import '../../../users/data/users_provider.dart';
-import '../../data/report_models.dart';
-import '../../data/reports_provider.dart';
+import 'package:mobile_shop_management_system/features/sales/data/sales_provider.dart';
+import 'package:mobile_shop_management_system/features/users/data/users_provider.dart';
+import 'package:mobile_shop_management_system/features/reports/data/reports_provider.dart';
 
 class ReportsScreen extends ConsumerStatefulWidget {
   const ReportsScreen({super.key});

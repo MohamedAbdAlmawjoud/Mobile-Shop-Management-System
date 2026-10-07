@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/auth/password_hasher.dart';
-import '../../users/data/users_provider.dart';
-import '../../users/models/user_model.dart';
+import 'package:mobile_shop_management_system/core/auth/password_hasher.dart';
+import 'package:mobile_shop_management_system/features/users/data/users_provider.dart';
+import 'package:mobile_shop_management_system/features/users/models/user_model.dart';
 
 class AuthException implements Exception {
   final String message;

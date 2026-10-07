@@ -1,11 +1,6 @@
-import '../../products/models/product_model.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
 
-/// UI-only purchase line — not persisted until the purchase is completed.
-///
-/// For a regular product, [imeis] is null and [quantity] is entered
-/// directly. For an IMEI-tracked product, [imeis] holds the specific units
-/// being received and [quantity] is always imeis.length — each unit needs
-/// its own serial recorded, same rule as Inventory's IMEI stock-in.
+/// Purchase line. IMEI-tracked quantities match the number of serials entered.
 class PurchaseCartItem {
   final ProductModel product;
   final int quantity;

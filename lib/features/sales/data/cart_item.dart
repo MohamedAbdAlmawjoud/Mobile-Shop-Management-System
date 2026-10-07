@@ -1,11 +1,6 @@
-import '../../products/models/product_model.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
 
-/// UI-only cart line item — not persisted until checkout.
-///
-/// For a regular product, [imei] is null and [quantity] can be any amount.
-/// For an IMEI-tracked product, [imei] identifies the specific unit being
-/// sold and [quantity] is always 1 — each IMEI is its own cart line, since
-/// they're distinct serialized units, not interchangeable stock.
+/// Cart line. IMEI-tracked units have one serial number and quantity 1.
 class CartItem {
   final ProductModel product;
   final int quantity;

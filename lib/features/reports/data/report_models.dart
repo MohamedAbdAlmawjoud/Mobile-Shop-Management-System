@@ -1,4 +1,4 @@
-import '../../products/models/product_model.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
 
 /// One row in the Sales Report — a single sale with its line items,
 /// enough to show a breakdown without re-querying per row in the UI.

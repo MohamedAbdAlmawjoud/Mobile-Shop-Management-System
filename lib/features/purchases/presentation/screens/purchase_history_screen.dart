@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../data/purchase_models.dart';
-import '../../data/purchases_provider.dart';
+import 'package:mobile_shop_management_system/features/purchases/data/purchases_provider.dart';
 
 class PurchaseHistoryScreen extends ConsumerWidget {
   const PurchaseHistoryScreen({super.key});

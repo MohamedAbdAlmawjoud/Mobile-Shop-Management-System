@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../products/data/imei_provider.dart';
-import '../../../products/models/product_model.dart';
+import 'package:mobile_shop_management_system/features/products/data/imei_provider.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
 
 /// Lets the cashier pick (or scan) the specific in-stock IMEI being sold.
 /// Returns the chosen IMEI string, or null if cancelled.

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../data/cart_provider.dart';
-import '../../data/sales_provider.dart';
+import 'package:mobile_shop_management_system/features/sales/data/cart_provider.dart';
+import 'package:mobile_shop_management_system/features/sales/data/sales_provider.dart';
 
 const List<String> paymentMethods = ['Cash', 'Card', 'Mobile Payment'];
 
@@ -45,7 +45,6 @@ class CartPanel extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          // Line 1: name + subtotal
                           Row(
                             children: [
                               Expanded(
@@ -62,7 +61,6 @@ class CartPanel extends ConsumerWidget {
                             ],
                           ),
                           const SizedBox(height: 4),
-                          // Line 2: IMEI (if applicable) / unit price + controls + delete
                           Row(
                             children: [
                               Expanded(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../models/user_model.dart';
+import 'package:mobile_shop_management_system/features/users/models/user_model.dart';
 
 /// Result passed back via Navigator.pop when the form is submitted.
 class UserFormResult {

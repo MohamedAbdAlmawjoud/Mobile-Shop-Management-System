@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import '../database/database_service.dart';
+import 'package:mobile_shop_management_system/core/database/database_service.dart';
 
 class BackupException implements Exception {
   final String message;

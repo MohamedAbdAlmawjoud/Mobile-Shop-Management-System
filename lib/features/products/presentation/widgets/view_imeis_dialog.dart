@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../data/imei_provider.dart';
-import '../../data/imei_repository.dart';
-import '../../models/product_model.dart';
+import 'package:mobile_shop_management_system/features/products/data/imei_provider.dart';
+import 'package:mobile_shop_management_system/features/products/data/imei_repository.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
 
 class ViewImeisDialog extends ConsumerWidget {
   final ProductModel product;

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../categories/data/categories_provider.dart';
-import '../../data/products_provider.dart';
-import '../../models/product_model.dart';
+import 'package:mobile_shop_management_system/features/categories/data/categories_provider.dart';
+import 'package:mobile_shop_management_system/features/products/data/products_provider.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
 
 /// Returns a ProductModel (without id if adding) via Navigator.pop,
 /// or null if cancelled.

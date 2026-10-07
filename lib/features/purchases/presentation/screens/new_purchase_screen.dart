@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../products/data/products_provider.dart';
-import '../../../products/models/product_model.dart';
-import '../../data/purchase_cart_item.dart';
-import '../../data/purchase_cart_provider.dart';
-import '../widgets/add_imei_purchase_line_dialog.dart';
-import '../widgets/add_purchase_line_dialog.dart';
-import '../widgets/purchase_cart_panel.dart';
+import 'package:mobile_shop_management_system/features/products/data/products_provider.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
+import 'package:mobile_shop_management_system/features/purchases/data/purchase_cart_item.dart';
+import 'package:mobile_shop_management_system/features/purchases/data/purchase_cart_provider.dart';
+import 'package:mobile_shop_management_system/features/purchases/presentation/widgets/add_imei_purchase_line_dialog.dart';
+import 'package:mobile_shop_management_system/features/purchases/presentation/widgets/add_purchase_line_dialog.dart';
+import 'package:mobile_shop_management_system/features/purchases/presentation/widgets/purchase_cart_panel.dart';
 
 class NewPurchaseScreen extends ConsumerWidget {
   const NewPurchaseScreen({super.key});

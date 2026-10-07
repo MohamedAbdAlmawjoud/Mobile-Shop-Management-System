@@ -1,10 +1,7 @@
-// REFERENCE ONLY — not wired into the app. This shows the pattern described in
-// riverpod_conventions.md. Delete this file once Step 7 (Categories CRUD) is done
-// and you've written a real one following the same shape.
+// Example AsyncNotifier pattern; see riverpod_conventions.md.
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// Pretend model + repository for illustration:
 class _ExampleItem {
   final int id;
   final String name;
@@ -13,17 +10,14 @@ class _ExampleItem {
 
 class _ExampleRepository {
   Future<List<_ExampleItem>> getAll() async {
-    // In a real feature, this queries SQLite via DatabaseService.
     await Future.delayed(const Duration(milliseconds: 200));
     return [const _ExampleItem(1, 'Sample')];
   }
 
   Future<void> insert(String name) async {
-    // In a real feature: INSERT INTO ... via DatabaseService.
   }
 
   Future<void> delete(int id) async {
-    // In a real feature: DELETE FROM ... via DatabaseService.
   }
 }
 
@@ -39,8 +33,8 @@ class ExampleNotifier extends AsyncNotifier<List<_ExampleItem>> {
   Future<void> addItem(String name) async {
     final repo = ref.read(_exampleRepositoryProvider);
     await repo.insert(name);
-    ref.invalidateSelf();       // triggers build() again -> refetches list
-    await future;                // wait for the refetch to complete
+    ref.invalidateSelf();
+    await future;
   }
 
   Future<void> removeItem(int id) async {
@@ -54,12 +48,3 @@ class ExampleNotifier extends AsyncNotifier<List<_ExampleItem>> {
 final exampleProvider = AsyncNotifierProvider<ExampleNotifier, List<_ExampleItem>>(
   ExampleNotifier.new,
 );
-
-// Widget usage would look like:
-//
-// final itemsAsync = ref.watch(exampleProvider);
-// itemsAsync.when(
-//   data: (items) => ListView(children: items.map((i) => Text(i.name)).toList()),
-//   loading: () => const CircularProgressIndicator(),
-//   error: (e, st) => Text('Error: $e'),
-// );

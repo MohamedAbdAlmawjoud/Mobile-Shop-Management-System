@@ -1,7 +1,7 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import '../../../core/database/database_service.dart';
-import '../models/category_model.dart';
+import 'package:mobile_shop_management_system/core/database/database_service.dart';
+import 'package:mobile_shop_management_system/features/categories/models/category_model.dart';
 
 /// All SQL for categories lives here. Nothing above this layer
 /// (providers, widgets) should know about table names or SQL.

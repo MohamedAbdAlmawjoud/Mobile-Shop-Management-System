@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/category_model.dart';
+import 'package:mobile_shop_management_system/features/categories/models/category_model.dart';
 import 'categories_repository.dart';
 
 final categoriesRepositoryProvider = Provider((ref) => CategoriesRepository());

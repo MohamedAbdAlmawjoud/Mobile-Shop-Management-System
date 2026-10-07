@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../data/auth_provider.dart';
+import 'package:mobile_shop_management_system/features/auth/data/auth_provider.dart';
 
 /// Shown only on first run, when the users table is empty.
 /// Forces creation of the first Admin account before the app can be used.

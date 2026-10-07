@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../products/presentation/widgets/imei_lookup_section.dart';
-import '../../../users/presentation/screens/users_management_section.dart';
-import '../widgets/backup_restore_section.dart';
+import 'package:mobile_shop_management_system/features/products/presentation/widgets/imei_lookup_section.dart';
+import 'package:mobile_shop_management_system/features/users/presentation/screens/users_management_section.dart';
+import 'package:mobile_shop_management_system/features/settings/presentation/widgets/backup_restore_section.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});

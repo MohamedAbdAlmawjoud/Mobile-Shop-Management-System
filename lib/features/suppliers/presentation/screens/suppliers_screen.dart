@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../data/suppliers_provider.dart';
-import '../../models/supplier_model.dart';
-import '../widgets/supplier_form_dialog.dart';
+import 'package:mobile_shop_management_system/features/suppliers/data/suppliers_provider.dart';
+import 'package:mobile_shop_management_system/features/suppliers/models/supplier_model.dart';
+import 'package:mobile_shop_management_system/features/suppliers/presentation/widgets/supplier_form_dialog.dart';
 
 class SuppliersScreen extends ConsumerWidget {
   const SuppliersScreen({super.key});

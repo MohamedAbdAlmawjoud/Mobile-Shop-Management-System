@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../dashboard/data/dashboard_provider.dart';
-import '../../inventory/data/inventory_provider.dart';
-import '../../sales/data/pos_products_provider.dart';
-import '../models/product_model.dart';
+import 'package:mobile_shop_management_system/features/dashboard/data/dashboard_provider.dart';
+import 'package:mobile_shop_management_system/features/inventory/data/inventory_provider.dart';
+import 'package:mobile_shop_management_system/features/sales/data/pos_products_provider.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
 import 'products_filter.dart';
 import 'products_repository.dart';
 

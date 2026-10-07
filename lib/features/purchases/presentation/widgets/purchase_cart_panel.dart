@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../suppliers/data/suppliers_provider.dart';
-import '../../data/purchase_cart_provider.dart';
-import '../../data/purchases_provider.dart';
-import '../../data/purchases_repository.dart';
+import 'package:mobile_shop_management_system/features/suppliers/data/suppliers_provider.dart';
+import 'package:mobile_shop_management_system/features/purchases/data/purchase_cart_provider.dart';
+import 'package:mobile_shop_management_system/features/purchases/data/purchases_provider.dart';
+import 'package:mobile_shop_management_system/features/purchases/data/purchases_repository.dart';
 
 class PurchaseCartPanel extends ConsumerWidget {
   const PurchaseCartPanel({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../models/category_model.dart';
+import 'package:mobile_shop_management_system/features/categories/models/category_model.dart';
 
 /// Shared dialog for both "Add Category" and "Edit Category".
 /// Returns the entered name via Navigator.pop, or null if cancelled.

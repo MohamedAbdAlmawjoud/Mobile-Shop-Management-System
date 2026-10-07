@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/supplier_model.dart';
+import 'package:mobile_shop_management_system/features/suppliers/models/supplier_model.dart';
 import 'suppliers_repository.dart';
 
 final suppliersRepositoryProvider = Provider((ref) => SuppliersRepository());

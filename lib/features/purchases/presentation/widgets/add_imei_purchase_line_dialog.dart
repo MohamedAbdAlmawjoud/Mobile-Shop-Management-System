@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../products/models/product_model.dart';
-import '../../data/purchase_cart_item.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
+import 'package:mobile_shop_management_system/features/purchases/data/purchase_cart_item.dart';
 
 /// For IMEI-tracked products: unit cost applies to every unit in this
 /// batch, plus one IMEI per line (scanner-friendly, same pattern as

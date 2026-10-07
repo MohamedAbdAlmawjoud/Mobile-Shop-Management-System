@@ -4,8 +4,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/backup/backup_provider.dart';
-import '../../../../core/backup/backup_service.dart';
+import 'package:mobile_shop_management_system/core/backup/backup_provider.dart';
+import 'package:mobile_shop_management_system/core/backup/backup_service.dart';
 
 class BackupRestoreSection extends ConsumerStatefulWidget {
   const BackupRestoreSection({super.key});

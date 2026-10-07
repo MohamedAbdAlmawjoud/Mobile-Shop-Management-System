@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../data/imei_provider.dart';
-import '../../data/product_imei.dart';
+import 'package:mobile_shop_management_system/features/products/data/imei_provider.dart';
+import 'package:mobile_shop_management_system/features/products/data/product_imei.dart';
 
 /// Admin tool: look up a single IMEI to see which product it belongs to
 /// and, if sold, when and to which sale — useful for warranty/support

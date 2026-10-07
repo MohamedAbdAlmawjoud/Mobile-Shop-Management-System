@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
-import '../../auth/data/auth_provider.dart';
-import '../../dashboard/data/dashboard_provider.dart';
-import '../../inventory/data/inventory_provider.dart';
-import '../../products/data/products_provider.dart';
+import 'package:mobile_shop_management_system/features/auth/data/auth_provider.dart';
+import 'package:mobile_shop_management_system/features/dashboard/data/dashboard_provider.dart';
+import 'package:mobile_shop_management_system/features/inventory/data/inventory_provider.dart';
+import 'package:mobile_shop_management_system/features/products/data/products_provider.dart';
 import 'cart_item.dart';
 import 'cart_provider.dart';
 import 'invoice_service.dart';

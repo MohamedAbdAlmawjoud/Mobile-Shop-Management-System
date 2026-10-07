@@ -1,11 +1,10 @@
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import '../../../core/database/database_service.dart';
-import '../../products/models/product_model.dart';
+import 'package:mobile_shop_management_system/core/database/database_service.dart';
+import 'package:mobile_shop_management_system/features/products/models/product_model.dart';
 import 'dashboard_stats.dart';
 
-/// Low-stock threshold: a product with quantity <= this is flagged.
-/// Kept here for now; move to a configurable app setting later if needed.
+/// Products at or below this quantity are flagged as low stock.
 const int lowStockThreshold = 5;
 
 class DashboardRepository {
@@ -14,7 +13,6 @@ class DashboardRepository {
   Future<DashboardStats> getStats() async {
     final db = await _db;
 
-    // Today's sales total + count.
     final todayRow = await db.rawQuery('''
       SELECT COALESCE(SUM(total), 0) as total, COUNT(*) as count
       FROM sales
@@ -23,11 +21,9 @@ class DashboardRepository {
     final todaySalesTotal = (todayRow.first['total'] as num).toDouble();
     final todaySalesCount = todayRow.first['count'] as int;
 
-    // Total product count.
     final productCountRow = await db.rawQuery('SELECT COUNT(*) as count FROM products');
     final totalProducts = productCountRow.first['count'] as int;
 
-    // Low-stock products.
     final lowStockRows = await db.query(
       'products',
       where: 'quantity <= ?',
@@ -37,7 +33,6 @@ class DashboardRepository {
     );
     final lowStockProducts = lowStockRows.map(ProductModel.fromMap).toList();
 
-    // Recent sales, joined with the cashier's username.
     final recentRows = await db.rawQuery('''
       SELECT sales.id, sales.total, sales.payment_method, sales.created_at, users.username
       FROM sales

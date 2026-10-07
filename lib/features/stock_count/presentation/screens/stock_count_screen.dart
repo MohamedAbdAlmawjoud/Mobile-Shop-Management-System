@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../data/stock_count_entry.dart';
-import '../../data/stock_count_provider.dart';
+import 'package:mobile_shop_management_system/features/stock_count/data/stock_count_entry.dart';
+import 'package:mobile_shop_management_system/features/stock_count/data/stock_count_provider.dart';
 
 class StockCountScreen extends ConsumerWidget {
   const StockCountScreen({super.key});

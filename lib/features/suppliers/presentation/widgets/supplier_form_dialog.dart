@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../models/supplier_model.dart';
+import 'package:mobile_shop_management_system/features/suppliers/models/supplier_model.dart';
 
 class SupplierFormDialog extends StatefulWidget {
   final SupplierModel? existing;

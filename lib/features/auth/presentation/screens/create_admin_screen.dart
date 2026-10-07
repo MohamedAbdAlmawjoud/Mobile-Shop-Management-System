@@ -19,6 +19,8 @@ class _CreateAdminScreenState extends ConsumerState<CreateAdminScreen> {
   final _confirmController = TextEditingController();
   String? _error;
   bool _submitting = false;
+  bool _showPassword = false;
+  bool _showConfirmPassword = false;
 
   @override
   void dispose() {
@@ -57,14 +59,29 @@ class _CreateAdminScreenState extends ConsumerState<CreateAdminScreen> {
                     TextFormField(
                       controller: _usernameController,
                       decoration: const InputDecoration(labelText: 'Username'),
-                      validator: (v) =>
-                          (v == null || v.trim().isEmpty) ? 'Username is required' : null,
+                      validator: (v) => (v == null || v.trim().isEmpty)
+                          ? 'Username is required'
+                          : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _passwordController,
-                      decoration: const InputDecoration(labelText: 'Password'),
-                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        suffixIcon: IconButton(
+                          tooltip: _showPassword
+                              ? 'Hide password'
+                              : 'Show password',
+                          icon: Icon(
+                            _showPassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () =>
+                              setState(() => _showPassword = !_showPassword),
+                        ),
+                      ),
+                      obscureText: !_showPassword,
                       validator: (v) => (v == null || v.length < 4)
                           ? 'Password must be at least 4 characters'
                           : null,
@@ -72,10 +89,26 @@ class _CreateAdminScreenState extends ConsumerState<CreateAdminScreen> {
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _confirmController,
-                      decoration: const InputDecoration(labelText: 'Confirm password'),
-                      obscureText: true,
-                      validator: (v) =>
-                          v != _passwordController.text ? 'Passwords do not match' : null,
+                      decoration: InputDecoration(
+                        labelText: 'Confirm password',
+                        suffixIcon: IconButton(
+                          tooltip: _showConfirmPassword
+                              ? 'Hide password'
+                              : 'Show password',
+                          icon: Icon(
+                            _showConfirmPassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () => setState(
+                            () => _showConfirmPassword = !_showConfirmPassword,
+                          ),
+                        ),
+                      ),
+                      obscureText: !_showConfirmPassword,
+                      validator: (v) => v != _passwordController.text
+                          ? 'Passwords do not match'
+                          : null,
                     ),
                     if (_error != null) ...[
                       const SizedBox(height: 12),
@@ -109,10 +142,9 @@ class _CreateAdminScreenState extends ConsumerState<CreateAdminScreen> {
       _error = null;
     });
     try {
-      await ref.read(authProvider.notifier).createFirstAdmin(
-            _usernameController.text,
-            _passwordController.text,
-          );
+      await ref
+          .read(authProvider.notifier)
+          .createFirstAdmin(_usernameController.text, _passwordController.text);
     } on AuthException catch (e) {
       setState(() => _error = e.message);
     } finally {

@@ -8,7 +8,11 @@ class UserFormResult {
   final String role;
   final String? password; // null/empty in edit mode means "keep existing"
 
-  const UserFormResult({required this.username, required this.role, this.password});
+  const UserFormResult({
+    required this.username,
+    required this.role,
+    this.password,
+  });
 }
 
 class UserFormDialog extends StatefulWidget {
@@ -25,11 +29,14 @@ class _UserFormDialogState extends State<UserFormDialog> {
   late final TextEditingController _usernameController;
   late final TextEditingController _passwordController;
   late String _role;
+  bool _showPassword = false;
 
   @override
   void initState() {
     super.initState();
-    _usernameController = TextEditingController(text: widget.existing?.username ?? '');
+    _usernameController = TextEditingController(
+      text: widget.existing?.username ?? '',
+    );
     _passwordController = TextEditingController();
     _role = widget.existing?.role ?? 'cashier';
   }
@@ -58,16 +65,27 @@ class _UserFormDialogState extends State<UserFormDialog> {
                 controller: _usernameController,
                 autofocus: true,
                 decoration: const InputDecoration(labelText: 'Username'),
-                validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Username is required' : null,
+                validator: (v) => (v == null || v.trim().isEmpty)
+                    ? 'Username is required'
+                    : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _passwordController,
-                obscureText: true,
                 decoration: InputDecoration(
-                  labelText: isEdit ? 'New password (leave blank to keep current)' : 'Password',
+                  labelText: isEdit
+                      ? 'New password (leave blank to keep current)'
+                      : 'Password',
+                  suffixIcon: IconButton(
+                    tooltip: _showPassword ? 'Hide password' : 'Show password',
+                    icon: Icon(
+                      _showPassword ? Icons.visibility_off : Icons.visibility,
+                    ),
+                    onPressed: () =>
+                        setState(() => _showPassword = !_showPassword),
+                  ),
                 ),
+                obscureText: !_showPassword,
                 validator: (v) {
                   if (!isEdit && (v == null || v.length < 4)) {
                     return 'Password must be at least 4 characters';
@@ -97,20 +115,21 @@ class _UserFormDialogState extends State<UserFormDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
-        FilledButton(
-          onPressed: _submit,
-          child: Text(isEdit ? 'Save' : 'Add'),
-        ),
+        FilledButton(onPressed: _submit, child: Text(isEdit ? 'Save' : 'Add')),
       ],
     );
   }
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
-    Navigator.of(context).pop(UserFormResult(
-      username: _usernameController.text.trim(),
-      role: _role,
-      password: _passwordController.text.isEmpty ? null : _passwordController.text,
-    ));
+    Navigator.of(context).pop(
+      UserFormResult(
+        username: _usernameController.text.trim(),
+        role: _role,
+        password: _passwordController.text.isEmpty
+            ? null
+            : _passwordController.text,
+      ),
+    );
   }
 }

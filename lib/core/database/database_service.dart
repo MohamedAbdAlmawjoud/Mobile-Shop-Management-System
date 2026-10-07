@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -12,13 +11,9 @@ class DatabaseService {
   static const String _dbFileName = 'mobile_shop.db';
   static const int _dbVersion = 3;
 
-  Database? _db;
+  Future<Database>? _databaseFuture;
 
-  Future<Database> get database async {
-    if (_db != null) return _db!;
-    _db = await _initDatabase();
-    return _db!;
-  }
+  Future<Database> get database => _databaseFuture ??= _initDatabase();
 
   /// Full path to the database file on disk — used by BackupService so the
   /// path logic lives in exactly one place.
@@ -181,14 +176,28 @@ class DatabaseService {
     ''');
 
     // Helpful indexes for common lookups.
-    await db.execute('CREATE INDEX idx_products_category ON products (category_id)');
+    await db.execute(
+      'CREATE INDEX idx_products_category ON products (category_id)',
+    );
     await db.execute('CREATE INDEX idx_products_barcode ON products (barcode)');
-    await db.execute('CREATE INDEX idx_sale_items_sale ON sale_items (sale_id)');
-    await db.execute('CREATE INDEX idx_stock_movements_product ON stock_movements (product_id)');
-    await db.execute('CREATE INDEX idx_product_imeis_product ON product_imeis (product_id)');
-    await db.execute('CREATE INDEX idx_product_imeis_status ON product_imeis (status)');
-    await db.execute('CREATE INDEX idx_purchases_supplier ON purchases (supplier_id)');
-    await db.execute('CREATE INDEX idx_purchase_items_purchase ON purchase_items (purchase_id)');
+    await db.execute(
+      'CREATE INDEX idx_sale_items_sale ON sale_items (sale_id)',
+    );
+    await db.execute(
+      'CREATE INDEX idx_stock_movements_product ON stock_movements (product_id)',
+    );
+    await db.execute(
+      'CREATE INDEX idx_product_imeis_product ON product_imeis (product_id)',
+    );
+    await db.execute(
+      'CREATE INDEX idx_product_imeis_status ON product_imeis (status)',
+    );
+    await db.execute(
+      'CREATE INDEX idx_purchases_supplier ON purchases (supplier_id)',
+    );
+    await db.execute(
+      'CREATE INDEX idx_purchase_items_purchase ON purchase_items (purchase_id)',
+    );
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -211,8 +220,12 @@ class DatabaseService {
             ON DELETE RESTRICT
         )
       ''');
-      await db.execute('CREATE INDEX idx_product_imeis_product ON product_imeis (product_id)');
-      await db.execute('CREATE INDEX idx_product_imeis_status ON product_imeis (status)');
+      await db.execute(
+        'CREATE INDEX idx_product_imeis_product ON product_imeis (product_id)',
+      );
+      await db.execute(
+        'CREATE INDEX idx_product_imeis_status ON product_imeis (status)',
+      );
     }
 
     if (oldVersion < 3) {
@@ -253,16 +266,23 @@ class DatabaseService {
             ON DELETE RESTRICT
         )
       ''');
-      await db.execute('CREATE INDEX idx_purchases_supplier ON purchases (supplier_id)');
-      await db.execute('CREATE INDEX idx_purchase_items_purchase ON purchase_items (purchase_id)');
+      await db.execute(
+        'CREATE INDEX idx_purchases_supplier ON purchases (supplier_id)',
+      );
+      await db.execute(
+        'CREATE INDEX idx_purchase_items_purchase ON purchase_items (purchase_id)',
+      );
     }
   }
 
   Future<void> close() async {
-    final db = _db;
-    if (db != null) {
-      await db.close();
-      _db = null;
+    final opening = _databaseFuture;
+    if (opening == null) return;
+
+    final db = await opening;
+    await db.close();
+    if (identical(_databaseFuture, opening)) {
+      _databaseFuture = null;
     }
   }
 }

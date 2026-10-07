@@ -16,6 +16,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _passwordController = TextEditingController();
   String? _error;
   bool _submitting = false;
+  bool _showPassword = false;
 
   @override
   void dispose() {
@@ -48,17 +49,33 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     TextFormField(
                       controller: _usernameController,
                       decoration: const InputDecoration(labelText: 'Username'),
-                      validator: (v) =>
-                          (v == null || v.trim().isEmpty) ? 'Username is required' : null,
+                      validator: (v) => (v == null || v.trim().isEmpty)
+                          ? 'Username is required'
+                          : null,
                       onFieldSubmitted: (_) => _submit(),
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _passwordController,
-                      decoration: const InputDecoration(labelText: 'Password'),
-                      obscureText: true,
-                      validator: (v) =>
-                          (v == null || v.isEmpty) ? 'Password is required' : null,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        suffixIcon: IconButton(
+                          tooltip: _showPassword
+                              ? 'Hide password'
+                              : 'Show password',
+                          icon: Icon(
+                            _showPassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () =>
+                              setState(() => _showPassword = !_showPassword),
+                        ),
+                      ),
+                      obscureText: !_showPassword,
+                      validator: (v) => (v == null || v.isEmpty)
+                          ? 'Password is required'
+                          : null,
                       onFieldSubmitted: (_) => _submit(),
                     ),
                     if (_error != null) ...[
@@ -93,10 +110,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       _error = null;
     });
     try {
-      await ref.read(authProvider.notifier).login(
-            _usernameController.text,
-            _passwordController.text,
-          );
+      await ref
+          .read(authProvider.notifier)
+          .login(_usernameController.text, _passwordController.text);
     } on AuthException catch (e) {
       setState(() => _error = e.message);
     } finally {
